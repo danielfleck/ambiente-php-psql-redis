@@ -233,6 +233,10 @@ RUN export NVM_DIR="$HOME/.nvm" \
 	&& nvm install --lts \
 	&& npm install -g yarn
 
+### INCLUIR SYMFONY CLI
+# RUN curl -sS https://get.symfony.com/cli/installer | bash \
+#     && mv /root/.symfony5/bin/symfony /usr/local/bin/symfony
+
 ### INCLUIR AQUI OS MÓDULOS DO PHP REQUERIDOS NO AMBIENTE DE DESENVOLVIMENTO
 
 ### Módulo dl_test # RUN /bin/sh "/modulos-php/dl_test"
