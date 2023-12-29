@@ -1,4 +1,5 @@
 .env
+.data
 
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,phpstorm,phpunit,symfony
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,phpstorm,phpunit,symfony

@@ -1,5 +1,6 @@
 version: "3"
-
+volumes:
+    db:
 services:
   app:
     container_name: app
@@ -16,12 +17,12 @@ services:
     env_file:
       - .env
     environment:
-      DOCUMENTROOT: ${DOCUMENTROOT:-public}
+      DOCUMENTROOT: ${DOCUMENTROOT}
     volumes:
       - "./:/var/www/html"
     ports:
-      - 80:80
-      - 443:443
+      - ${PORTA_HTTP}:80
+      - ${PORTA_HTTPS}:443
     depends_on:
       - db
   db:
@@ -38,7 +39,14 @@ services:
         - NO_PROXY=${no_proxy:-}
     env_file:
       - .env
+    volumes:
+        - db:/var/lib/postgresql/data
+    ports:
+      - ${PORTA_POSTGRESQL}:5432
   redis:
+    container_name: redis
+    restart: unless-stopped
+    tty: true
     build:
       context: docker/redis
       dockerfile: Dockerfile
@@ -49,3 +57,5 @@ services:
         - NO_PROXY=${no_proxy:-}
     env_file:
       - .env
+    ports:
+      - ${PORTA_REDIS}:6379

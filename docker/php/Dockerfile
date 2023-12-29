@@ -1,8 +1,7 @@
 # CONFIGURAÇÕES DO AMBIENTE DE PRODUÇÃO
 FROM php:8.3.0-apache AS producao
 
-COPY modulos/ /modulos-php/
-
+# ATUALIZAÇÃO DO AMBIENTE
 RUN set -eux \
 	&& apt-get update --no-allow-insecure-repositories \
 	&& apt-get --assume-yes --auto-remove upgrade \
@@ -10,14 +9,13 @@ RUN set -eux \
 	&& apt-get clean \
 	&& rm -r /var/lib/apt/lists/*
 
-# CONFIGURAÇÕES DO PHP
+# ARQUIVOS DE CONFIGURAÇÕES DO PHP
 COPY php.ini/php.ini-production /usr/local/etc/php/php.ini
 COPY php.ini/conf.d/ /usr/local/etc/php/conf.d/
 
+# CONFIGURAÇÃO DO VIRTUAL HOST DO APACHE COM SSL
 COPY vhosts/ /etc/apache2/sites-available/
-
 RUN openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -keyout /etc/ssl/private/server.key -out /etc/ssl/certs/server.crt -subj '/CN=localhost'
-
 RUN a2enmod rewrite ssl \
     && a2dissite 000-default default-ssl \
     && a2ensite app app-ssl
@@ -31,24 +29,28 @@ EXPOSE 80
 
 EXPOSE 443
 
-# DESCOMENTAR MÓDULOS DO PHP REQUERIDOS NO AMBIENTE DE PRODUÇÃO
+# ARQUIVOS COM COMANDOS PARA INSTALAR OS MÓDULOS DO PHP
+COPY modulos/ /modulos-php/
 
-### Módulo amqp 
+# DESCOMENTAR MÓDULOS DO PHP REQUERIDOS NO AMBIENTE DE PRODUÇÃO
+# MÓDULOS DO CORE JÁ SE ENCONTRAM DESCOMENTADOS
+
+### Módulo amqp
 # RUN /bin/sh "/modulos-php/amqp"
 
-### Módulo ast 
+### Módulo ast
 # RUN /bin/sh "/modulos-php/ast"
 
-### Módulo bcmath 
+### Módulo bcmath
 RUN /bin/sh "/modulos-php/bcmath"
 
-### Módulo bz2 
+### Módulo bz2
 # RUN /bin/sh "/modulos-php/bz2"
 
-### Módulo calendar 
+### Módulo calendar
 # RUN /bin/sh "/modulos-php/calendar"
 
-### Módulo cmark 
+### Módulo cmark
 # RUN /bin/sh "/modulos-php/cmark"
 
 ### Módulo ctype (PHP CORE)
@@ -57,25 +59,25 @@ RUN /bin/sh "/modulos-php/ctype"
 ### Módulo curl (PHP CORE)
 RUN /bin/sh "/modulos-php/curl"
 
-### Módulo dba 
+### Módulo dba
 # RUN /bin/sh "/modulos-php/dba"
 
 ### Módulo dom (PHP CORE)
 RUN /bin/sh "/modulos-php/dom"
 
-### Módulo ds 
+### Módulo ds
 # RUN /bin/sh "/modulos-php/ds"
 
-### Módulo enchant 
+### Módulo enchant
 # RUN /bin/sh "/modulos-php/enchant"
 
-### Módulo exif 
+### Módulo exif
 # RUN /bin/sh "/modulos-php/exif"
 
-### Módulo fann 
+### Módulo fann
 # RUN /bin/sh "/modulos-php/fann"
 
-### Módulo ffi 
+### Módulo ffi
 # RUN /bin/sh "/modulos-php/ffi"
 
 ### Módulo fileinfo (PHP CORE)
@@ -90,19 +92,19 @@ RUN /bin/sh "/modulos-php/ftp"
 ### Módulo gd (PHP CORE)
 RUN /bin/sh "/modulos-php/gd"
 
-### Módulo gearman 
+### Módulo gearman
 # RUN /bin/sh "/modulos-php/gearman"
 
-### Módulo gettext 
+### Módulo gettext
 # RUN /bin/sh "/modulos-php/gettext"
 
-### Módulo gmp 
+### Módulo gmp
 # RUN /bin/sh "/modulos-php/gmp"
 
-### Módulo gnupg 
+### Módulo gnupg
 # RUN /bin/sh "/modulos-php/gnupg"
 
-### Módulo grpc 
+### Módulo grpc
 # RUN /bin/sh "/modulos-php/grpc"
 
 ### Módulo hash (PHP CORE)
@@ -111,73 +113,73 @@ RUN /bin/sh "/modulos-php/hash"
 ### Módulo iconv (PHP CORE)
 RUN /bin/sh "/modulos-php/iconv"
 
-### Módulo igbinary 
+### Módulo igbinary
 # RUN /bin/sh "/modulos-php/igbinary"
 
-### Módulo imagick 
+### Módulo imagick
 # RUN /bin/sh "/modulos-php/imagick"
 
-### Módulo imap 
+### Módulo imap
 # RUN /bin/sh "/modulos-php/imap"
 
-### Módulo inotify 
+### Módulo inotify
 # RUN /bin/sh "/modulos-php/inotify"
 
-### Módulo intl 
+### Módulo intl
 # RUN /bin/sh "/modulos-php/intl"
 
-### Módulo ldap 
+### Módulo ldap
 # RUN /bin/sh "/modulos-php/ldap"
 
-### Módulo libsodium 
+### Módulo libsodium
 # RUN /bin/sh "/modulos-php/libsodium"
 
 ### Módulo mbstring (PHP CORE)
 RUN /bin/sh "/modulos-php/mbstring"
 
-### Módulo mongodb 
+### Módulo mongodb
 # RUN /bin/sh "/modulos-php/mongodb"
 
-### Módulo mysqli 
+### Módulo mysqli
 # RUN /bin/sh "/modulos-php/mysqli"
 
-### Módulo oci8 
+### Módulo oci8
 # RUN /bin/sh "/modulos-php/oci8"
 
-### Módulo odbc 
+### Módulo odbc
 # RUN /bin/sh "/modulos-php/odbc"
 
-### Módulo opcache 
+### Módulo opcache
 # RUN /bin/sh "/modulos-php/opcache"
 
-### Módulo pcntl 
+### Módulo pcntl
 # RUN /bin/sh "/modulos-php/pcntl"
 
 ### Módulo pcre (PHP CORE)
 RUN /bin/sh "/modulos-php/pcre"
 
-### Módulo pdo_dblib 
+### Módulo pdo_dblib
 # RUN /bin/sh "/modulos-php/pdo_dblib"
 
-### Módulo pdo_firebird 
+### Módulo pdo_firebird
 # RUN /bin/sh "/modulos-php/pdo_firebird"
 
-### Módulo pdo_mysql 
+### Módulo pdo_mysql
 # RUN /bin/sh "/modulos-php/pdo_mysql"
 
-### Módulo pdo_oci 
+### Módulo pdo_oci
 # RUN /bin/sh "/modulos-php/pdo_oci"
 
-### Módulo pdo_odbc 
+### Módulo pdo_odbc
 # RUN /bin/sh "/modulos-php/pdo_odbc"
 
-### Módulo pdo_pgsql 
+### Módulo pdo_pgsql
 # RUN /bin/sh "/modulos-php/pdo_pgsql"
 
 ### Módulo pdo_sqlite (PHP CORE)
 RUN /bin/sh "/modulos-php/pdo_sqlite"
 
-### Módulo pgsql 
+### Módulo pgsql
 # RUN /bin/sh "/modulos-php/pgsql"
 
 ### Módulo phar (PHP CORE)
@@ -186,61 +188,61 @@ RUN /bin/sh "/modulos-php/phar"
 ### Módulo posix (PHP CORE)
 RUN /bin/sh "/modulos-php/posix"
 
-### Módulo pspell 
+### Módulo pspell
 # RUN /bin/sh "/modulos-php/pspell"
 
-### Módulo psr 
+### Módulo psr
 # RUN /bin/sh "/modulos-php/psr"
 
-### Módulo redis 
+### Módulo redis
 # RUN /bin/sh "/modulos-php/redis"
 
 ### Módulo session (PHP CORE)
 RUN /bin/sh "/modulos-php/session"
 
-### Módulo shmop 
+### Módulo shmop
 # RUN /bin/sh "/modulos-php/shmop"
 
 ### Módulo simplexml (PHP CORE)
 RUN /bin/sh "/modulos-php/simplexml"
 
-### Módulo snmp 
+### Módulo snmp
 # RUN /bin/sh "/modulos-php/snmp"
 
-### Módulo soap 
+### Módulo soap
 # RUN /bin/sh "/modulos-php/soap"
 
-### Módulo sockets 
+### Módulo sockets
 # RUN /bin/sh "/modulos-php/sockets"
 
 ### Módulo sodium (PHP CORE)
 RUN /bin/sh "/modulos-php/sodium"
 
-### Módulo ssh2 
+### Módulo ssh2
 # RUN /bin/sh "/modulos-php/ssh2"
 
-### Módulo swoole 
+### Módulo swoole
 # RUN /bin/sh "/modulos-php/swoole"
 
-### Módulo sysvmsg 
+### Módulo sysvmsg
 # RUN /bin/sh "/modulos-php/sysvmsg"
 
-### Módulo sysvsem 
+### Módulo sysvsem
 # RUN /bin/sh "/modulos-php/sysvsem"
 
-### Módulo sysvshm 
+### Módulo sysvshm
 # RUN /bin/sh "/modulos-php/sysvshm"
 
-### Módulo tidy 
+### Módulo tidy
 # RUN /bin/sh "/modulos-php/tidy"
 
-### Módulo timezonedb 
+### Módulo timezonedb
 # RUN /bin/sh "/modulos-php/timezonedb"
 
-### Módulo uploadprogress 
+### Módulo uploadprogress
 # RUN /bin/sh "/modulos-php/uploadprogress"
 
-### Módulo uuid 
+### Módulo uuid
 # RUN /bin/sh "/modulos-php/uuid"
 
 ### Módulo xml (PHP CORE)
@@ -252,13 +254,13 @@ RUN /bin/sh "/modulos-php/xmlreader"
 ### Módulo xmlwriter (PHP CORE)
 RUN /bin/sh "/modulos-php/xmlwriter"
 
-### Módulo xsl 
+### Módulo xsl
 # RUN /bin/sh "/modulos-php/xsl"
 
-### Módulo yaml 
+### Módulo yaml
 # RUN /bin/sh "/modulos-php/yaml"
 
-### Módulo zip 
+### Módulo zip
 # RUN /bin/sh "/modulos-php/zip"
 
 ### Módulo zlib (PHP CORE)
@@ -275,13 +277,13 @@ COPY php.ini/php.ini-development /usr/local/etc/php/php.ini
 
 # INCLUIR AQUI OS MÓDULOS DO PHP REQUERIDOS NO AMBIENTE DE DESENVOLVIMENTO
 
-### Módulo dl_test 
+### Módulo dl_test
 # RUN /bin/sh "/modulos-php/dl_test"
 
-### Módulo xdebug 
+### Módulo xdebug
 # RUN /bin/sh "/modulos-php/xdebug"
 
-### Módulo zend_test 
+### Módulo zend_test
 # RUN /bin/sh "/modulos-php/zend_test"
 
 
