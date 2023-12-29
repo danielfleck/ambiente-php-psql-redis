@@ -2,14 +2,15 @@
 
 ## UTILIZAÇÃO
 
-Fazer uma cópia do arquivo ```.env.exemplo``` para ```.env``` e editar. Não funcionará sem esse arquivo.
+Fazer uma cópia do arquivo ```.env.exemplo``` para ```.env``` e editar. **Não funcionará sem esse arquivo.**
 
-### Comando para levantar os containeres:
+### Comando para iniciar os containeres:
 
 ```bash
 $ docker compose up -d
 ```
-**Caso alguma dessas portas esteja sendo utilizada no host, o arquivo ```.env``` deverá ser editado
+
+**Caso alguma dessas portas: 80, 443, 6379, esteja sendo utilizada no host, o arquivo ```.env``` deverá ser editado.**
 
 ### Comando para parar os containeres:
 
@@ -17,14 +18,19 @@ $ docker compose up -d
 $ docker compose down
 ```
 
-**Caso sejam feitas alterações nos arquivos da pasta docker, as imagens precisam ser reconstruídas:**
+**Caso sejam feitas alterações nas configurações das imagens, ou seja, em qualquer arquivo da pasta docker, as imagens precisam ser reconstruídas:**
 
 ```bash
-$ docker compose up --force-recreate --build
+$ docker compose up --build
 ```
 
 Esse último procedimento pode demorar mas não precissa ser realizado com frequência.
 
+### Comando para acesssar o shell dos containeres
+
+```bash
+$ docker compose up --build
+```
 
 ## PHP
 
@@ -37,6 +43,8 @@ O arquivo ```php.ini``` pode ser personalizado para o ambiente de desenvolviment
 Também é possível carregar informações de configuração do *php* através de arquivos ```.ini``` dentro da pasta ```conf.d```.
 
 Os arquivos de configurações básicas de *virtualhost* do *Apache* estão na pasta ```vhosts```. As chaves *SSL* do *vhost* são criadas durante a *build* da imagem.
+
+Nas configurações da imagem de desenvolvimento foi consta a instalação do *Composer*, *Node* e *Yarn*.
 
 ## POSTGRESQL
 
