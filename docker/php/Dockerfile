@@ -277,6 +277,13 @@ COPY php.ini/php.ini-development /usr/local/etc/php/php.ini
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+RUN export NVM_DIR="$HOME/.nvm" \
+	&& [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" \
+    && [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" \
+	&& nvm install --lts \
+	&& npm install -g yarn
+
 # INCLUIR AQUI OS MÓDULOS DO PHP REQUERIDOS NO AMBIENTE DE DESENVOLVIMENTO
 
 ### Módulo dl_test
