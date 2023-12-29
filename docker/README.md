@@ -2,7 +2,9 @@
 
 ## UTILIZAÇÃO
 
-Fazer uma cópia do arquivo ```.env.exemplo``` para ```.env``` e editar. **Não funcionará sem esse arquivo.**
+Fazer uma cópia do arquivo ```.env.exemplo``` para ```.env``` e editar.
+
+**Nada funcionará sem esse arquivo!**
 
 ### Comando para iniciar os containeres:
 
@@ -10,7 +12,10 @@ Fazer uma cópia do arquivo ```.env.exemplo``` para ```.env``` e editar. **Não 
 $ docker compose up -d
 ```
 
-**Caso alguma dessas portas: 80, 443, 6379, esteja sendo utilizada no host, o arquivo ```.env``` deverá ser editado.**
+**Caso alguma dessas portas: 80, 443, 6379, esteja
+sendo utilizada no host, irá gerar um erro. O arquivo
+```.env``` deverá ser editado para escolher outras
+portas.**
 
 ### Comando para parar os containeres:
 
@@ -18,13 +23,15 @@ $ docker compose up -d
 $ docker compose down
 ```
 
-**Caso sejam feitas alterações nas configurações das imagens, ou seja, em qualquer arquivo da pasta docker, as imagens precisam ser reconstruídas:**
+**Caso sejam feitas alterações nas configurações das
+imagens, ou seja, em qualquer arquivo da pasta docker,
+as imagens precisam ser reconstruídas:**
 
 ```bash
 $ docker compose up --build
 ```
 
-Esse último procedimento pode demorar mas não precissa ser realizado com frequência.
+Esse último procedimento pode demorar mas não precisa ser realizado com frequência.
 
 ### Comando para acesssar o shell dos containeres
 
@@ -47,9 +54,13 @@ $ docker compose exec redis "/bin/bash"
 $ docker compose exec db psql -U app postgres
 ```
 
-## PHP
+## APP (PHP)
 
-O arquivo ```Dockerfile``` apresenta as principais configurações como ```php.ini``` de *dev.* e *prod.*, ```conf.d``` (*php*) e módulos.
+O arquivo ```Dockerfile``` apresenta as principais configurações como ```php.ini``` de *dev.* e *prod.* e os módulo para indicados para cada ambiente.
+
+Há um diretório ```conf.d-dev``` onde configurações exclusivas de desenvolvimento devem ser inclulídas.
+
+No diretório ```conf.d-prod``` devem ser inseridas configurações indispensáveis ao ambiente de produção.
 
 Para tornar o módulo disponível no ambiente, basta descomentar a linha com o comando ```RUN``` dentro do arquivo ```Dockerfile```.
 
@@ -61,7 +72,7 @@ Os arquivos de configurações básicas de *virtualhost* do *Apache* estão na p
 
 Nas configurações da imagem de desenvolvimento foi consta a instalação do *Composer*, *Node* e *Yarn*.
 
-## POSTGRESQL
+## DB (POSTGRESQL)
 
 O arquivo ```Dockerfile``` apresenta a instalação padrão da última versão do Postgresql.
 

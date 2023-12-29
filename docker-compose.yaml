@@ -7,7 +7,7 @@ services:
     restart: unless-stopped
     tty: true
     build:
-      context: docker/php/.
+      context: docker/app/.
       dockerfile: Dockerfile
       args:
         - HTTPS_PROXY=${https_proxy:-}
@@ -30,7 +30,7 @@ services:
     restart: unless-stopped
     tty: true
     build:
-      context: docker/postgres/.
+      context: docker/db/.
       dockerfile: Dockerfile
       args:
         - HTTPS_PROXY=${https_proxy:-}
