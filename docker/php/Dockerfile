@@ -275,6 +275,8 @@ FROM producao
 
 COPY php.ini/php.ini-development /usr/local/etc/php/php.ini
 
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
 # INCLUIR AQUI OS MÓDULOS DO PHP REQUERIDOS NO AMBIENTE DE DESENVOLVIMENTO
 
 ### Módulo dl_test
