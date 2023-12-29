@@ -1,0 +1,51 @@
+version: "3"
+
+services:
+  app:
+    container_name: app
+    restart: unless-stopped
+    tty: true
+    build:
+      context: docker/php/.
+      dockerfile: Dockerfile
+      args:
+        - HTTPS_PROXY=${https_proxy:-}
+        - HTTP_PROXY=${http_proxy:-}
+        - FTP_PROXY=${ftp_proxy:-}
+        - NO_PROXY=${no_proxy:-}
+    env_file:
+      - .env
+    environment:
+      DOCUMENTROOT: ${DOCUMENTROOT:-public}
+    volumes:
+      - "./:/var/www/html"
+    ports:
+      - 80:80
+      - 443:443
+    depends_on:
+      - db
+  db:
+    container_name: db
+    restart: unless-stopped
+    tty: true
+    build:
+      context: docker/postgres/.
+      dockerfile: Dockerfile
+      args:
+        - HTTPS_PROXY=${https_proxy:-}
+        - HTTP_PROXY=${http_proxy:-}
+        - FTP_PROXY=${ftp_proxy:-}
+        - NO_PROXY=${no_proxy:-}
+    env_file:
+      - .env
+  redis:
+    build:
+      context: docker/redis
+      dockerfile: Dockerfile
+      args:
+        - HTTPS_PROXY=${https_proxy:-}
+        - HTTP_PROXY=${http_proxy:-}
+        - FTP_PROXY=${ftp_proxy:-}
+        - NO_PROXY=${no_proxy:-}
+    env_file:
+      - .env
