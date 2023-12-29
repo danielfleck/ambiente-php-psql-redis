@@ -29,7 +29,22 @@ Esse último procedimento pode demorar mas não precissa ser realizado com frequ
 ### Comando para acesssar o shell dos containeres
 
 ```bash
-$ docker compose up --build
+# bash em app (php)
+$ docker compose exec app "/bin/bash"
+
+# bash em db
+$ docker compose exec db "/bin/bash"
+
+# bash em redis
+$ docker compose exec redis "/bin/bash"
+```
+
+### Comando para acessar o prompt de comando psql em db
+
+```bash
+#      app: é o nome do usuário que consta em .env
+# postgres: é o nome do banco de dados que será conectado
+$ docker compose exec db psql -U app postgres
 ```
 
 ## PHP
