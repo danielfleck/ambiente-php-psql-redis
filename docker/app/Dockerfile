@@ -226,12 +226,12 @@ COPY php.ini/conf.d-dev/ /usr/local/etc/php/conf.d/
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-RUN export NVM_DIR="$HOME/.nvm" \
-	&& [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" \
-    && [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" \
-	&& nvm install --lts \
-	&& npm install -g yarn
+# RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+# RUN export NVM_DIR="$HOME/.nvm" \
+#     && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" \
+#     && [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" \
+#     && nvm install --lts \
+#     && npm install -g yarn
 
 ### INCLUIR SYMFONY CLI
 # RUN curl -sS https://get.symfony.com/cli/installer | bash \
