@@ -6,7 +6,7 @@ services:
     restart: unless-stopped
     tty: true
     build:
-      context: docker/app/.
+      context: app/.
       dockerfile: Dockerfile
       args:
         - HTTPS_PROXY=${https_proxy:-}
@@ -14,11 +14,11 @@ services:
         - FTP_PROXY=${ftp_proxy:-}
         - NO_PROXY=${no_proxy:-}
     env_file:
-      - .env
+      - .portas
     environment:
-      DOCUMENTROOT: ${DOCUMENTROOT}
+      DOCUMENTROOT: "public"
     volumes:
-      - "./:/var/www/html"
+      - "./..:/var/www/html"
     ports:
       - ${PORTA_HTTP}:80
       - ${PORTA_HTTPS}:443
@@ -28,7 +28,7 @@ services:
     restart: unless-stopped
     tty: true
     build:
-      context: docker/db/.
+      context: db/.
       dockerfile: Dockerfile
       args:
         - HTTPS_PROXY=${https_proxy:-}
@@ -36,7 +36,11 @@ services:
         - FTP_PROXY=${ftp_proxy:-}
         - NO_PROXY=${no_proxy:-}
     env_file:
-      - .env
+      - .portas
+    environment:
+      - "POSTGRES_DB=app"
+      - "POSTGRES_USER=app"
+      - "POSTGRES_PASSWORD=123456"
     volumes:
         - db:/var/lib/postgresql/data
     ports:
@@ -45,7 +49,7 @@ services:
     restart: unless-stopped
     tty: true
     build:
-      context: docker/redis
+      context: redis
       dockerfile: Dockerfile
       args:
         - HTTPS_PROXY=${https_proxy:-}
@@ -53,6 +57,6 @@ services:
         - FTP_PROXY=${ftp_proxy:-}
         - NO_PROXY=${no_proxy:-}
     env_file:
-      - .env
+      - .portas
     ports:
       - ${PORTA_REDIS}:6379
