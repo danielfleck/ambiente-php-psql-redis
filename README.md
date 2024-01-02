@@ -10,9 +10,9 @@ Após inicializar o diretório de trabalho do sistema e configurar o repositóri
 
 Não convém clonar o repositório pois o objetivo é justamente ambiente versionar do projeo através do repositório *git* do sistema e não mais do projeto do ambiente.
 
-Fazer uma cópia do arquivo ```.portas.exemplo``` para ```.portas``` e editar. As portas que serão usadas poderão ser diferentes em cada máquina.
+Se houver colisão das portas dos containeres com as portas locais, fazer uma cópia do arquivo ```.env.exemplo```para ```.env``` e editar. O docker composer lerá o arquivo automaticamente.
 
-**O ambiente não funcionará sem esse arquivo!**
+As portas que serão usadas poderão ser diferentes em cada máquina por isso não deve fazer parte do versionamento.
 
 Os comandos do docker deverão ser efetuados dentro do diretório docker.
 
@@ -20,11 +20,12 @@ Os comandos do docker deverão ser efetuados dentro do diretório docker.
 
 ```bash
 $ docker compose up -d
+$ docker compose --env-file=.env up -d # para forçar ler o arquivo contendo a indicação das portas dos serviços
 ```
 
-**Caso alguma dessas portas: 80, 443, 6379, esteja
+**Caso alguma dessas portas: 80, 443, 5432, 6379, esteja
 sendo utilizada no host, irá gerar um erro. O arquivo
-```.portas``` deverá ser editado para indicação de outras
+```.env``` deverá ser editado para indicação de outras
 portas.**
 
 ### Comando para parar os containeres:
@@ -38,7 +39,8 @@ imagens, ou seja, em qualquer arquivo da pasta docker,
 as imagens precisam ser reconstruídas:**
 
 ```bash
-$ docker compose up --build
+$ docker compose up --build -d
+$ docker compose --env-file=.env up --build -d # para forçar ler o arquivo contendo a indicação das portas dos serviços
 ```
 
 Esse último procedimento pode demorar mas não precisa ser realizado com frequência.

@@ -13,15 +13,13 @@ services:
         - HTTP_PROXY=${http_proxy:-}
         - FTP_PROXY=${ftp_proxy:-}
         - NO_PROXY=${no_proxy:-}
-    env_file:
-      - .portas
     environment:
       DOCUMENTROOT: "public"
     volumes:
       - "./..:/var/www/html"
     ports:
-      - ${PORTA_HTTP}:80
-      - ${PORTA_HTTPS}:443
+      - ${PORTA_HTTP:-80}:80
+      - ${PORTA_HTTPS:-443}:443
     depends_on:
       - db
   db:
@@ -35,8 +33,6 @@ services:
         - HTTP_PROXY=${http_proxy:-}
         - FTP_PROXY=${ftp_proxy:-}
         - NO_PROXY=${no_proxy:-}
-    env_file:
-      - .portas
     environment:
       - "POSTGRES_DB=app"
       - "POSTGRES_USER=app"
@@ -44,7 +40,7 @@ services:
     volumes:
         - db:/var/lib/postgresql/data
     ports:
-      - ${PORTA_POSTGRESQL}:5432
+      - ${PORTA_POSTGRESQL:-5432}:5432
   redis:
     restart: unless-stopped
     tty: true
@@ -56,7 +52,5 @@ services:
         - HTTP_PROXY=${http_proxy:-}
         - FTP_PROXY=${ftp_proxy:-}
         - NO_PROXY=${no_proxy:-}
-    env_file:
-      - .portas
     ports:
-      - ${PORTA_REDIS}:6379
+      - ${PORTA_REDIS:-6379}:6379
